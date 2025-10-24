@@ -11,7 +11,7 @@ function Home({ notes }) {
   };
 
   const filteredNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase())
+    note.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
