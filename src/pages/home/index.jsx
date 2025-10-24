@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import ListItem from "./components/items";
-import { getAllNotes } from "../../utils/local-data";
+import ListItem from "./items";
+import AddNewPageButton from "../../components/home/buttons/addNewPage";
+import PropTypes from "prop-types";
 
-function Home() {
-  const [allNotes] = useState(getAllNotes());
+function Home({ notes }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredNotes = allNotes.filter((note) =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -30,9 +30,14 @@ function Home() {
         </div>
 
         <ListItem notes={filteredNotes} />
+        <AddNewPageButton />
       </main>
     </>
   );
 }
+
+Home.propTypes = {
+  notes: PropTypes.array.isRequired,
+};
 
 export default Home;

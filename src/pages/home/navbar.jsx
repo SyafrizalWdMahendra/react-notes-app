@@ -9,11 +9,6 @@ function Navbar() {
           Notes App
         </Link>
       </h1>
-      <h3>
-        <Link to="/archived" className="arcLink">
-          Archived
-        </Link>
-      </h3>
     </header>
   );
 }

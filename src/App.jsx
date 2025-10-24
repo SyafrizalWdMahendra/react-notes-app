@@ -1,11 +1,23 @@
-import React from "react";
-import Navbar from "./modules/home/components/navbar";
-import Home from "./modules/home";
-import Archived from "./modules/home/components/archive";
-import NoteDetails from "./modules/home/components/noteDetails";
+import React, { useState } from "react";
+import Navbar from "./pages/home/navbar";
+import Home from "./pages/home";
+import NoteDetails from "./pages/details";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CreateNotes from "./pages/create";
+import { getAllNotes } from "./utils/local-data";
 
 function App() {
+  const [notes, setNotes] = useState(getAllNotes());
+
+  const onAddNoteHandler = (newNote) => {
+    setNotes((prevNotes) => [newNote, ...prevNotes]);
+  };
+
+  const onDeleteHandler = (id) => {
+    const updatedNotes = notes.filter((note) => note.id !== id);
+    setNotes(updatedNotes);
+  };
+
   return (
     <BrowserRouter>
       <div className="app-container">
@@ -13,9 +25,15 @@ function App() {
 
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/archived" element={<Archived />} />
-            <Route path="/notes/:id" element={<NoteDetails />} />
+            <Route path="/" element={<Home notes={notes} />} />
+            <Route
+              path="/notes/:id"
+              element={<NoteDetails notes={notes} onDelete={onDeleteHandler} />}
+            />
+            <Route
+              path="/notes/new"
+              element={<CreateNotes onAddNote={onAddNoteHandler} />}
+            />
           </Routes>
         </main>
       </div>
