@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import ListItem from "../../components/home/ListItems";
 import AddNewPageButton from "../../components/home/buttons/AddNewPageButton";
 import { getActiveNotes } from "../../utils/network-data";
+import useInput from "../../hooks/useInput";
 
 function Home() {
   const [notes, setNotes] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, handleInputChange] = useInput("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +23,6 @@ function Home() {
 
     fetchNotes();
   }, []);
-
-  const handleInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase())

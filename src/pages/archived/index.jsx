@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ListItem from "../../components/home/ListItems";
 import { getArchivedNotes } from "../../utils/network-data";
+import useInput from "../../hooks/useInput";
 
 function ArchivedNotes() {
   const [notes, setNotes] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, handleInputChange] = useInput("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,10 +22,6 @@ function ArchivedNotes() {
 
     fetchArchivedNotes();
   }, []);
-
-  const handleInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase())

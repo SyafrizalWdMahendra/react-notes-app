@@ -1,35 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../utils/network-data";
+import useInput from "../../hooks/useInput";
 
 function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, onNameChange] = useInput("");
+  const [email, onEmailChange] = useInput("");
+  const [password, onPasswordChange] = useInput("");
+  const [confirmPassword, onConfirmPasswordChange] = useInput("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const onNameChange = (event) => {
-    setName(event.target.value);
-    setError("");
-  };
-
-  const onEmailChange = (event) => {
-    setEmail(event.target.value);
-    setError("");
-  };
-
-  const onPasswordChange = (event) => {
-    setPassword(event.target.value);
-    setError("");
-  };
-
-  const onConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-    setError("");
-  };
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();

@@ -2,20 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddAction from "../../components/create/buttons/AddAction";
 import { addNote } from "../../utils/network-data";
+import useInput from "../../hooks/useInput";
 
 function CreateNotes() {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, onTitleChangeHandler] = useInput("");
+  const [body, onBodyChangeHandler] = useInput("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const onTitleChangeHandler = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const onBodyChangeHandler = (event) => {
-    setBody(event.target.value);
-  };
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -23,9 +16,7 @@ function CreateNotes() {
 
     try {
       await addNote({ title, body });
-      setTitle("");
-      setBody("");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error("Failed to add note:", error);
       alert("Failed to add note. Please try again.");
