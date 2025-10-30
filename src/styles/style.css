@@ -313,6 +313,77 @@ main {
   text-decoration: underline;
 }
 
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--on-background);
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link {
+  font-size: 28px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.error-message {
+  background-color: var(--error);
+  color: white;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.login-page,
+.register-page {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.login-page h2,
+.register-page h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 32px;
+}
+
+.login-page p,
+.register-page p {
+  text-align: center;
+  margin-top: 16px;
+  color: var(--on-background-grey);
+}
+
+.input-login button:disabled,
+.input-register button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading state */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.detail-page__action {
+  position: fixed;
+  display: flex;
+  gap: 16px;
+  bottom: 32px;
+  right: 32px;
+}
+
 @media screen and (min-width: 650px) {
   .notes-list {
     grid-template-columns: repeat(2, 1fr);

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import AddAction from "../../components/create/buttons/addAction";
+import { addNote } from "../../utils/network-data";
 
-function CreateNotes({ onAddNote }) {
+function CreateNotes() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onTitleChangeHandler = (event) => {
@@ -16,54 +17,47 @@ function CreateNotes({ onAddNote }) {
     setBody(event.target.value);
   };
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
-    const newNote = {
-      id: `notes-${+new Date()}`,
-      title: title,
-      body: body,
-      archived: false,
-      createdAt: new Date().toISOString(),
-    };
-
-    onAddNote(newNote);
-
-    setTitle("");
-    setBody("");
-    navigate("/");
+    try {
+      await addNote({ title, body });
+      setTitle("");
+      setBody("");
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to add note:", error);
+      alert("Failed to add note. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="add-new-page">
-      {/* 7. Ganti <form> agar menggunakan onSubmit React */}
       <form className="add-new-page__input" onSubmit={onSubmitHandler}>
-        {/* 8. Ganti div[contenteditable] dengan <input> */}
         <input
           type="text"
           className="add-new-page__input__title"
           placeholder="Catatan Rahasia"
-          value={title} // Terhubung ke state
-          onChange={onTitleChangeHandler} // Terhubung ke handler
+          value={title}
+          onChange={onTitleChangeHandler}
           required
+          disabled={loading}
         />
-
-        {/* 9. Ganti div[contenteditable] dengan <textarea> */}
         <textarea
           className="add-new-page__input__body"
           placeholder="Tulis catatan Anda di sini..."
-          value={body} // Terhubung ke state
-          onChange={onBodyChangeHandler} // Terhubung ke handler
+          value={body}
+          onChange={onBodyChangeHandler}
           required
+          disabled={loading}
         />
-        <AddAction />
+        <AddAction loading={loading} />
       </form>
     </section>
   );
 }
-
-CreateNotes.propTypes = {
-  onAddNote: PropTypes.func.isRequired,
-};
 
 export default CreateNotes;

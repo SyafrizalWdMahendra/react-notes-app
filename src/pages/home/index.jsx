@@ -1,24 +1,50 @@
-import React, { useState } from "react";
-import ListItem from "./items";
-import AddNewPageButton from "../../components/home/buttons/addNewPage";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import ListItem from "../../components/home/ListItems";
+import AddNewPageButton from "../../components/home/buttons/AddNewPageButton";
+import { getActiveNotes } from "../../utils/network-data";
+import { ArchiveButton } from "../../components/home/buttons/ArchiveButton";
 
-function Home({ notes }) {
+function Home() {
+  const [notes, setNotes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      try {
+        const activeNotes = await getActiveNotes();
+        setNotes(activeNotes);
+      } catch (error) {
+        console.error("Failed to fetch notes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotes();
+  }, []);
 
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
   const filteredNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    note.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "50px" }}>
+        <p>Loading notes...</p>
+      </div>
+    );
+  }
 
   return (
     <>
       <main>
         <div className="note-list">
-          <h2>Active Note</h2>
+          <h2>Active Notes</h2>
           <div className="search-bar">
             <input
               type="text"
@@ -35,9 +61,5 @@ function Home({ notes }) {
     </>
   );
 }
-
-Home.propTypes = {
-  notes: PropTypes.array.isRequired,
-};
 
 export default Home;

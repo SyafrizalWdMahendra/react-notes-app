@@ -1,13 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import DetailPageButton from "../../components/details/buttons/detailPageButton";
 import { showFormattedDate } from "../../utils";
+import { getNote, deleteNote, archiveNote } from "../../utils/network-data";
 
-function NoteDetail({ notes, onDelete }) {
+function NoteDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const note = notes.find((note) => note.id === id);
+  const [note, setNote] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNote = async () => {
+      try {
+        const noteData = await getNote(id);
+        setNote(noteData);
+      } catch (error) {
+        console.error("Failed to fetch note:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNote();
+  }, [id]);
+
+  const handleDelete = async () => {
+    try {
+      await deleteNote(note.id);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to delete note:", error);
+      alert("Failed to delete note. Please try again.");
+    }
+  };
+
+  const handleArchive = async () => {
+    try {
+      await archiveNote(note.id);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to archive note:", error);
+      alert("Failed to archive note. Please try again.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "50px" }}>
+        <p>Loading note...</p>
+      </div>
+    );
+  }
+
   if (!note) {
     return (
       <div className="note-list-empty">
@@ -15,12 +60,6 @@ function NoteDetail({ notes, onDelete }) {
       </div>
     );
   }
-
-  const handleDelete = () => {
-    onDelete(note.id);
-
-    navigate("/");
-  };
 
   return (
     <div className="detail-page">
@@ -31,14 +70,9 @@ function NoteDetail({ notes, onDelete }) {
       <div className="detail-page__body">
         <p>{note.body}</p>
       </div>
-      <DetailPageButton onDelete={handleDelete} />
+      <DetailPageButton onDelete={handleDelete} onArchive={handleArchive} />
     </div>
   );
 }
-
-NoteDetail.propTypes = {
-  notes: PropTypes.array.isRequired,
-  onDelete: PropTypes.func.isRequired,
-};
 
 export default NoteDetail;
