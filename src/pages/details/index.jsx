@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import DetailPageButton from "../../components/details/buttons/detailPageButton";
+import DetailPageButton from "../../components/details/buttons/DetailPageButton";
 import { showFormattedDate } from "../../utils";
 import { getNote, deleteNote, archiveNote } from "../../utils/network-data";
 

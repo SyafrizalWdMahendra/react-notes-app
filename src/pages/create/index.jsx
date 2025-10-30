@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AddAction from "../../components/create/buttons/addAction";
+import AddAction from "../../components/create/buttons/AddAction";
 import { addNote } from "../../utils/network-data";
 
 function CreateNotes() {

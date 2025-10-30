@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ListItem from "../../components/home/ListItems";
 import AddNewPageButton from "../../components/home/buttons/AddNewPageButton";
 import { getActiveNotes } from "../../utils/network-data";
-import { ArchiveButton } from "../../components/home/buttons/ArchiveButton";
 
 function Home() {
   const [notes, setNotes] = useState([]);
