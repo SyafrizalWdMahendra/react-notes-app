@@ -47,7 +47,7 @@ function App() {
       authedUser,
       onLogout,
     }),
-    [authedUser]
+    [authedUser],
   );
 
   if (initializing) {
